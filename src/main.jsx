@@ -23,7 +23,15 @@ msalInstance.addEventCallback((event) => {
   }
 });
 
-msalInstance.initialize().then(() => {
+msalInstance.initialize().then(async () => {
+  //  MSAL no sabe cuándo terminó de procesar el regreso desde
+  // Microsoft (o un intento fallido/duplicado)
+  // BrowserAuthError: interaction_in_progress en doble click o al recargar
+  // en medio de un login.
+  await msalInstance.handleRedirectPromise().catch((error) => {
+    console.error('Error procesando el regreso de Azure AD:', error);
+  });
+
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <MsalProvider instance={msalInstance}>
@@ -34,3 +42,5 @@ msalInstance.initialize().then(() => {
     </React.StrictMode>
   );
 });
+
+
