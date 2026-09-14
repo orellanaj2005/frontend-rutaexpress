@@ -28,10 +28,7 @@ El scope de login (`VITE_API_SCOPE`) se usa **con** el prefijo `api://`:
 ```
 api://5af865ec-.../access_as_user
 ```
-Esto es distinto al backend, donde el `API_CLIENT_ID` que se usa para
-validar el audience va **sin** el prefijo. No es un error — son dos usos
-distintos del mismo ID: acá se usa para pedirle el scope a Azure AD, allá se
-usa para comparar contra el claim `aud` del token ya emitido.
+
 
 ## Estructura
 
@@ -46,17 +43,6 @@ src/
   pages/                    -> Login, Dashboard, Shipments, Catalog, Reports, Audit
 ```
 
-## Pendiente / a confirmar con el equipo
-
-- [ ] Confirmar con Javier el `VITE_API_BASE_URL` real una vez que el BFF
-      esté desplegado (por ahora apunta a `http://localhost:8080`).
-- [ ] Los nombres de campo que espera cada endpoint (`shipmentId`, `status`,
-      etc.) — ajustar las páginas si el contrato real del BFF difiere.
-- [ ] Catálogo: falta la UI de edición de tarifa/capacidad para Admin (por
-      ahora solo lista).
-- [ ] Probar el flujo completo con un usuario de cada rol (Admin, Operador,
-      Cliente, Auditor) una vez que Azure AD tenga usuarios de prueba
-      asignados a cada uno (ver guía de Javier, sección 2.3).
 
 ## Correr el build de producción
 
