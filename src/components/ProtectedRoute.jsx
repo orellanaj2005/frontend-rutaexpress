@@ -13,10 +13,14 @@ import { useRoles } from '../hooks/useRoles';
  */
 export default function ProtectedRoute({ allowedRoles, children }) {
   const isAuthenticated = useIsAuthenticated();
-  const { hasAnyRole } = useRoles();
+  const { hasAnyRole, loading } = useRoles();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (loading) {
+    return <div className="page"><p>Cargando…</p></div>;
   }
 
   if (allowedRoles && !hasAnyRole(...allowedRoles)) {

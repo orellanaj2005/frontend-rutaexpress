@@ -197,8 +197,21 @@ button {
   color: var(--ink-soft);
 }
 
+.data-table input[type='number'] {
+  width: 90px;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+}
+
 .hint {
   color: var(--ink-soft);
   font-size: 13px;
   margin-top: 12px;
 }
+
