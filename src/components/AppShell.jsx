@@ -22,6 +22,9 @@ export default function AppShell({ children }) {
             {roles.some((r) => ['Admin', 'Despachador'].includes(r)) && (
               <NavLink to="/catalog">Catálogo</NavLink>
             )}
+             {roles.includes('Admin') && (
+              <NavLink to="/rabbitmq-admin">RabbitMQ</NavLink>
+            )}
             {roles.includes('Admin') && <NavLink to="/reports">Reportería</NavLink>}
             {roles.some((r) => ['Admin', 'Auditor'].includes(r)) && (
               <NavLink to="/audit">Auditoría</NavLink>

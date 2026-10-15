@@ -7,6 +7,7 @@ import Shipments from './pages/Shipments';
 import Catalog from './pages/Catalog';
 import Reports from './pages/Reports';
 import Audit from './pages/Audit';
+import RabbitAdmin from './pages/RabbitAdmin';
 
 // Roles por pantalla, tal cual la tabla del Caso RutaExpress, sección 6.
 export default function App() {
@@ -56,6 +57,15 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={['Admin', 'Auditor']}>
               <Audit />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/rabbitmq-admin"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <RabbitAdmin />
             </ProtectedRoute>
           }
         />
