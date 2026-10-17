@@ -51,3 +51,19 @@ export function createHttpClient(msalInstance) {
 
   return client;
 }
+
+/**
+ * Mensaje de error para mostrar al usuario. Usa el mensaje que envía el backend (el BFF reenvía el
+ * cuerpo de error de cada microservicio) y, si no viene, uno según el código HTTP.
+ */
+export function readErrorMessage(err) {
+  const message = err.response?.data?.message;
+  if (message) return message;
+  switch (err.response?.status) {
+    case undefined: return 'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.';
+    case 401: return 'Tu sesión expiró. Vuelve a iniciar sesión.';
+    case 403: return 'Tu rol no tiene permiso para esta acción.';
+    case 404: return 'El recurso solicitado no existe.';
+    default: return `El servidor respondió con un error (${err.response.status}).`;
+  }
+}

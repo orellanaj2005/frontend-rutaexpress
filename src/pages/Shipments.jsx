@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRoles } from '../hooks/useRoles';
 import { useApi } from '../hooks/useApi';
+import { readErrorMessage } from '../api/httpClient';
 
 const ESTADOS = ['CREADO', 'ACEPTADO', 'EN_BODEGA', 'EN_RUTA', 'ENTREGADO', 'CANCELADO'];
 
@@ -18,8 +19,11 @@ export default function Shipments() {
   function loadShipments() {
     api
       .get('/api/shipments')
-      .then((res) => setShipments(res.data.content ?? res.data))
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .then((res) => {
+        setShipments(res.data.content ?? res.data);
+        setError(null);
+      })
+      .catch((err) => setError(readErrorMessage(err)));
   }
 
   useEffect(loadShipments, [api]);
@@ -28,14 +32,14 @@ export default function Shipments() {
     api
       .post('/api/shipments', { serviceType: 'estandar' })
       .then(loadShipments)
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .catch((err) => setError(readErrorMessage(err)));
   }
 
   function handleStatusChange(id, status) {
     api
       .put(`/api/shipments/${id}/status`, { status })
       .then(loadShipments)
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .catch((err) => setError(readErrorMessage(err)));
   }
 
   const canCreate = hasRole('Cliente') || hasRole('Despachador');
@@ -45,7 +49,7 @@ export default function Shipments() {
     <div className="page">
       <h1>Envíos</h1>
 
-      {error && <p className="error-banner">Error al comunicarse con el BFF ({error}).</p>}
+      {error && <p className="error-banner">{error}</p>}
 
       {canCreate && <button onClick={handleCreate}>Crear envío</button>}
 

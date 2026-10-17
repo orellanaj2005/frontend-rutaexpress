@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useApi } from '../hooks/useApi';
+import { readErrorMessage } from '../api/httpClient';
 
 export default function Reports() {
   const api = useApi();
@@ -16,13 +17,13 @@ export default function Reports() {
         setKpis(kpiRes.data);
         setTopServices(topRes.data);
       })
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .catch((err) => setError(readErrorMessage(err)));
   }, [api]);
 
   return (
     <div className="page">
       <h1>Reportería</h1>
-      {error && <p className="error-banner">Error al comunicarse con el BFF ({error}).</p>}
+      {error && <p className="error-banner">{error}</p>}
 
       {kpis && (
         <section>

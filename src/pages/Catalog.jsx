@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRoles } from '../hooks/useRoles';
 import { useApi } from '../hooks/useApi';
+import { readErrorMessage } from '../api/httpClient';
 
 export default function Catalog() {
   const { hasRole } = useRoles();
@@ -16,7 +17,7 @@ export default function Catalog() {
     api
       .get('/api/catalog/services')
       .then((res) => setServices(res.data.content ?? res.data))
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .catch((err) => setError(readErrorMessage(err)));
   }
 
   useEffect(loadServices, [api]);
@@ -59,7 +60,7 @@ export default function Catalog() {
         cancelEditing(id);
         loadServices();
       })
-      .catch((err) => setError(err.response?.status ?? 'network'))
+      .catch((err) => setError(readErrorMessage(err)))
       .finally(() => setSavingId(null));
   }
 
@@ -67,9 +68,7 @@ export default function Catalog() {
     <div className="page">
       <h1>Catálogo de servicios</h1>
       {error && (
-        <p className="error-banner">
-          Error al comunicarse con el BFF ({error === 403 ? 'sin permiso' : error}).
-        </p>
+        <p className="error-banner">{error}</p>
       )}
 
       <table className="data-table">

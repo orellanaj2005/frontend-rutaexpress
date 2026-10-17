@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useApi } from '../hooks/useApi';
+import { readErrorMessage } from '../api/httpClient';
 
 const TABS = [
   { key: 'queues', label: 'Colas' },
@@ -14,10 +15,6 @@ function isDeadLetterQueue(name) {
   return name === 'q.audit.deadletter' || name.endsWith('.dlq');
 }
 
-/** Lee el mensaje de error que devuelve el backend ({ error, message }), si viene. */
-function readErrorMessage(err) {
-  return err.response?.data?.message ?? `Error de red o del servidor (${err.response?.status ?? 'sin respuesta'})`;
-}
 
 export default function RabbitAdmin() {
   const api = useApi();

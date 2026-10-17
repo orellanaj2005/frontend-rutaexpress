@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApi } from '../hooks/useApi';
+import { readErrorMessage } from '../api/httpClient';
 
 /**
  * Ver Caso RutaExpress, sección 6: "Timeline con filtros: usuario, fechas,
@@ -16,13 +17,13 @@ export default function Audit() {
     api
       .get('/api/audit/timeline', { params })
       .then((res) => setEvents(res.data.content ?? res.data))
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .catch((err) => setError(readErrorMessage(err)));
   }
 
   return (
     <div className="page">
       <h1>Auditoría</h1>
-      {error && <p className="error-banner">Error al comunicarse con el BFF ({error}).</p>}
+      {error && <p className="error-banner">{error}</p>}
 
       <div className="filters">
         <input

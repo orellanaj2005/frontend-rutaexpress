@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRoles } from '../hooks/useRoles';
 import { useApi } from '../hooks/useApi';
+import { readErrorMessage } from '../api/httpClient';
 
 /**
  * Ver Caso RutaExpress, sección 6: "Admin ve KPIs de la red. Despachador ve
@@ -25,7 +26,7 @@ export default function Dashboard() {
     api
       .get(endpoint)
       .then((res) => setData(res.data))
-      .catch((err) => setError(err.response?.status ?? 'network'));
+      .catch((err) => setError(readErrorMessage(err)));
   }, [api, isAdmin, loading]);
 
   return (
@@ -33,9 +34,7 @@ export default function Dashboard() {
       <h1>Dashboard</h1>
 
       {error && (
-        <p className="error-banner">
-          No se pudo cargar el dashboard ({error === 403 ? 'sin permiso' : `error ${error}`}).
-        </p>
+        <p className="error-banner">No se pudo cargar el dashboard: {error}</p>
       )}
 
       {hasRole('Admin') && data && (
