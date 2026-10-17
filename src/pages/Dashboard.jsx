@@ -7,13 +7,18 @@ import { useApi } from '../hooks/useApi';
  * envíos en bodega y en ruta. Cliente ve sus últimos envíos y estado."
  */
 export default function Dashboard() {
-  const { hasRole } = useRoles();
+  const { hasRole, loading } = useRoles();
   const api = useApi();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
+  // hasRole se recrea en cada render: depender de él volvía a ejecutar el efecto
+  // tras cada respuesta y dejaba el dashboard pidiendo KPIs en bucle.
+  const isAdmin = hasRole('Admin');
+
   useEffect(() => {
-    const endpoint = hasRole('Admin')
+    if (loading) return;
+    const endpoint = isAdmin
       ? '/api/report/kpis?range=last24h'
       : '/api/shipments'; // Despachador/Cliente: el BFF filtra por rol qué envíos les devuelve
 
@@ -21,7 +26,7 @@ export default function Dashboard() {
       .get(endpoint)
       .then((res) => setData(res.data))
       .catch((err) => setError(err.response?.status ?? 'network'));
-  }, [api, hasRole]);
+  }, [api, isAdmin, loading]);
 
   return (
     <div className="page">
