@@ -2,3 +2,9 @@ node_modules/
 dist/
 build/
 .env
+
+### Comunes a los 12 repositorios de RutaExpress ###
+target/
+bin/
+.idea/
+.vscode/
