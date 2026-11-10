@@ -25,6 +25,7 @@ export default function AppShell({ children }) {
              {roles.includes('Admin') && (
               <NavLink to="/rabbitmq-admin">RabbitMQ</NavLink>
             )}
+            {roles.includes('Admin') && <NavLink to="/kafka-admin">Kafka</NavLink>}
             {roles.includes('Admin') && <NavLink to="/reports">Reportería</NavLink>}
             {roles.some((r) => ['Admin', 'Auditor'].includes(r)) && (
               <NavLink to="/audit">Auditoría</NavLink>

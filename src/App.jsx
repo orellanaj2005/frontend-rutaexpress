@@ -8,6 +8,7 @@ import Catalog from './pages/Catalog';
 import Reports from './pages/Reports';
 import Audit from './pages/Audit';
 import RabbitAdmin from './pages/RabbitAdmin';
+import KafkaAdmin from './pages/KafkaAdmin';
 
 // Roles por pantalla, tal cual la tabla del Caso RutaExpress, sección 6.
 export default function App() {
@@ -66,6 +67,15 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={['Admin']}>
               <RabbitAdmin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/kafka-admin"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <KafkaAdmin />
             </ProtectedRoute>
           }
         />
